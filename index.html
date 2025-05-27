@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guitar Amp Auto-Tuner</title>
     <meta name="description" content="Configurez automatiquement votre ampli selon votre guitare, micros, pédales et style musical">
-    <meta name="keywords" content="guitare, ampli, réglage, automatique, musique">
+    <meta name="keywords" content="guitare, ampli, réglage, automatique, musique, guitar, amp, tuner">
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <link rel="icon" href="🎸" type="image/svg+xml">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎸</text></svg>">
     <style>
         .slider::-webkit-slider-thumb {
             appearance: none;
@@ -29,14 +29,639 @@
             cursor: pointer;
             border: none;
         }
+        body {
+            margin: 0;
+            padding: 0;
+        }
     </style>
 </head>
 <body>
     <div id="root"></div>
     
     <script type="text/babel">
-        // COPIEZ ICI LE CODE JAVASCRIPT COMPLET DE L'APPLICATION
-        // (Je vous fournirai le code complet dans le fichier suivant)
+        const { useState, useEffect } = React;
+        const { Guitar, Music, Settings, Save, Share2, Volume2, Sliders, Zap } = lucide;
+
+        const GuitarAmpTuner = () => {
+          const [selectedGuitar, setSelectedGuitar] = useState('');
+          const [selectedPickups, setSelectedPickups] = useState('');
+          const [selectedAmp, setSelectedAmp] = useState('');
+          const [selectedPedals, setSelectedPedals] = useState([]);
+          const [selectedStyle, setSelectedStyle] = useState('');
+          const [selectedArtist, setSelectedArtist] = useState('');
+          const [customArtist, setCustomArtist] = useState('');
+          const [ampSettings, setAmpSettings] = useState({
+            gain: 50,
+            treble: 50,
+            middle: 50,
+            bass: 50,
+            reverb: 30,
+            presence: 40,
+            volume: 60,
+            contour: 0,
+            depth: 0,
+            resonance: 0,
+            bright: false,
+            vintage: false
+          });
+          const [savedPresets, setSavedPresets] = useState([]);
+          const [presetName, setPresetName] = useState('');
+          const [showSaveDialog, setShowSaveDialog] = useState(false);
+
+          const ampTypes = [
+            'Fender Twin Reverb',
+            'Marshall JCM800',
+            'Marshall Plexi',
+            'Vox AC30',
+            'Mesa Boogie Dual Rectifier',
+            'Orange Rockerverb',
+            'Blackstar HT Club 40',
+            'Blackstar St James Combo 212 6L6',
+            'Hughes & Kettner Triamp',
+            'ENGL Powerball',
+            'Peavey 5150',
+            'Soldano SLO-100',
+            'Bogner Ecstasy',
+            'Diezel VH4',
+            'Friedman BE-100',
+            'Two Rock Studio Pro',
+            'Matchless DC30',
+            'Bad Cat Black Cat',
+            'Dr Z Maz 18',
+            'Supro Delta King',
+            'Roland JC-120'
+          ];
+
+          const guitars = [
+            'Fender Stratocaster',
+            'Gibson Les Paul',
+            'Fender Telecaster',
+            'Gibson SG',
+            'Fender Jaguar',
+            'Gibson ES-335',
+            'Ibanez RG',
+            'PRS Custom 24'
+          ];
+
+          const pickupTypes = [
+            'Simple bobinage',
+            'Humbucker',
+            'P90',
+            'Mini humbucker',
+            'Active (EMG)',
+            'Filtertron',
+            'Goldfoil',
+            'Lipstick tube',
+            'Rail humbucker',
+            'Coil tap humbucker',
+            'Hot rails',
+            'Noiseless single coil',
+            'Oil City',
+            'Firebird',
+            'Jazzmaster',
+            'Jaguar',
+            'Telecaster vintage',
+            'Strat vintage',
+            'PAF vintage',
+            'Modern high output',
+            'Ceramic magnet',
+            'Alnico 2',
+            'Alnico 5',
+            'Piezo'
+          ];
+
+          const pedalTypes = [
+            'Overdrive',
+            'Distortion',
+            'Fuzz',
+            'Delay',
+            'Reverb',
+            'Chorus',
+            'Phaser',
+            'Wah',
+            'Compresseur',
+            'Noise Gate'
+          ];
+
+          const musicalStyles = [
+            'Rock classique',
+            'Blues',
+            'Jazz',
+            'Metal',
+            'Punk',
+            'Country',
+            'Funk',
+            'Progressive',
+            'Grunge',
+            'Indie'
+          ];
+
+          const artists = [
+            'Jimi Hendrix',
+            'Eric Clapton',
+            'Jimmy Page',
+            'David Gilmour',
+            'Slash',
+            'Eddie Van Halen',
+            'Stevie Ray Vaughan',
+            'B.B. King',
+            'Kurt Cobain',
+            'John Mayer'
+          ];
+
+          const getAmpControls = (ampType) => {
+            const baseControls = ['gain', 'treble', 'middle', 'bass', 'reverb', 'presence', 'volume'];
+            
+            switch (ampType) {
+              case 'Fender Twin Reverb':
+                return [...baseControls, 'bright', 'vibrato'];
+              case 'Marshall JCM800':
+              case 'Marshall Plexi':  
+                return [...baseControls, 'resonance'];
+              case 'Vox AC30':
+                return [...baseControls, 'cut', 'brilliance'];
+              case 'Mesa Boogie Dual Rectifier':
+                return [...baseControls, 'contour', 'vintage'];
+              case 'Orange Rockerverb':
+                return [...baseControls, 'attenuator'];
+              case 'Blackstar HT Club 40':
+                return [...baseControls, 'isa'];
+              case 'Blackstar St James Combo 212 6L6':
+                return [...baseControls, 'isa', 'power_reduction'];
+              case 'Peavey 5150':
+                return [...baseControls, 'resonance', 'crunch'];
+              case 'ENGL Powerball':
+                return [...baseControls, 'depth', 'contour'];
+              case 'Roland JC-120':
+                return [...baseControls, 'chorus', 'vibrato'];
+              default:
+                return baseControls;
+            }
+          };
+
+          const getAmpPresets = (ampType) => {
+            switch (ampType) {
+              case 'Fender Twin Reverb':
+                return { gain: 25, treble: 65, middle: 50, bass: 45, reverb: 55, presence: 45, volume: 65, bright: true, vibrato: false };
+              case 'Marshall JCM800':
+                return { gain: 70, treble: 70, middle: 60, bass: 55, reverb: 25, presence: 65, volume: 70, resonance: 60 };
+              case 'Marshall Plexi':
+                return { gain: 60, treble: 65, middle: 65, bass: 50, reverb: 20, presence: 60, volume: 75, resonance: 55 };
+              case 'Vox AC30':
+                return { gain: 50, treble: 60, middle: 70, bass: 45, reverb: 40, presence: 55, volume: 65, cut: 60, brilliance: true };
+              case 'Mesa Boogie Dual Rectifier':
+                return { gain: 80, treble: 65, middle: 40, bass: 70, reverb: 30, presence: 70, volume: 60, contour: 40, vintage: false };
+              case 'Orange Rockerverb':
+                return { gain: 65, treble: 60, middle: 65, bass: 60, reverb: 45, presence: 55, volume: 65, attenuator: 50 };
+              case 'Blackstar HT Club 40':
+                return { gain: 55, treble: 62, middle: 58, bass: 55, reverb: 40, presence: 60, volume: 65, isa: 45 };
+              case 'Blackstar St James Combo 212 6L6':
+                return { gain: 50, treble: 58, middle: 62, bass: 58, reverb: 45, presence: 55, volume: 68, isa: 50, power_reduction: 50 };
+              case 'Peavey 5150':
+                return { gain: 85, treble: 75, middle: 30, bass: 75, reverb: 20, presence: 80, volume: 50, resonance: 70, crunch: 60 };
+              case 'ENGL Powerball':
+                return { gain: 80, treble: 70, middle: 45, bass: 70, reverb: 25, presence: 75, volume: 55, depth: 65, contour: 50 };
+              case 'Roland JC-120':
+                return { gain: 15, treble: 55, middle: 60, bass: 55, reverb: 40, presence: 50, volume: 70, chorus: true, vibrato: false };
+              case 'Soldano SLO-100':
+                return { gain: 75, treble: 68, middle: 55, bass: 62, reverb: 35, presence: 70, volume: 60 };
+              case 'Two Rock Studio Pro':
+                return { gain: 35, treble: 62, middle: 58, bass: 52, reverb: 50, presence: 48, volume: 68 };
+              default:
+                return { gain: 50, treble: 50, middle: 50, bass: 50, reverb: 30, presence: 40, volume: 60 };
+            }
+          };
+
+          const getAutoSettings = () => {
+            let settings = selectedAmp ? getAmpPresets(selectedAmp) : { ...ampSettings };
+
+            if (selectedGuitar.includes('Stratocaster') && selectedPickups === 'Simple bobinage') {
+              settings = { ...settings, treble: Math.min(settings.treble + 5, 100), middle: Math.max(settings.middle - 5, 0) };
+            } else if (selectedGuitar.includes('Les Paul') && selectedPickups === 'Humbucker') {
+              settings = { ...settings, middle: Math.min(settings.middle + 10, 100), bass: Math.min(settings.bass + 10, 100) };
+            } else if (selectedPickups === 'P90') {
+              settings = { ...settings, middle: Math.min(settings.middle + 5, 100), gain: Math.min(settings.gain + 10, 100) };
+            } else if (selectedPickups === 'Active (EMG)') {
+              settings = { ...settings, gain: Math.max(settings.gain - 5, 0), presence: Math.min(settings.presence + 10, 100) };
+            }
+
+            switch (selectedStyle) {
+              case 'Blues':
+                settings = { ...settings, gain: Math.max(settings.gain - 10, 0), reverb: Math.min(settings.reverb + 15, 100) };
+                break;
+              case 'Metal':
+                settings = { ...settings, gain: Math.min(settings.gain + 15, 100), middle: Math.max(settings.middle - 20, 0), presence: Math.min(settings.presence + 10, 100) };
+                break;
+              case 'Jazz':
+                settings = { ...settings, gain: Math.max(settings.gain - 30, 0), middle: Math.min(settings.middle + 15, 100), reverb: Math.min(settings.reverb + 10, 100) };
+                break;
+              case 'Country':
+                settings = { ...settings, gain: Math.max(settings.gain - 25, 0), treble: Math.min(settings.treble + 10, 100), reverb: Math.min(settings.reverb + 20, 100) };
+                break;
+              default:
+                break;
+            }
+
+            if (selectedPedals.includes('Overdrive')) {
+              settings.gain = Math.max(settings.gain - 15, 0);
+            }
+            if (selectedPedals.includes('Delay')) {
+              settings.reverb = Math.max(settings.reverb - 10, 0);
+            }
+            if (selectedPedals.includes('Reverb')) {
+              settings.reverb = Math.min(settings.reverb + 20, 100);
+            }
+
+            return settings;
+          };
+
+          const applyAutoSettings = () => {
+            const newSettings = getAutoSettings();
+            setAmpSettings(newSettings);
+          };
+
+          const handlePedalToggle = (pedal) => {
+            setSelectedPedals(prev => 
+              prev.includes(pedal) 
+                ? prev.filter(p => p !== pedal)
+                : [...prev, pedal]
+            );
+          };
+
+          const savePreset = () => {
+            if (presetName.trim()) {
+              const newPreset = {
+                id: Date.now(),
+                name: presetName,
+                guitar: selectedGuitar,
+                pickups: selectedPickups,
+                amp: selectedAmp,
+                pedals: [...selectedPedals],
+                style: selectedStyle,
+                artist: selectedArtist === 'custom' ? customArtist : selectedArtist,
+                settings: { ...ampSettings }
+              };
+              setSavedPresets(prev => [...prev, newPreset]);
+              setPresetName('');
+              setShowSaveDialog(false);
+            }
+          };
+
+          const loadPreset = (preset) => {
+            setSelectedGuitar(preset.guitar);
+            setSelectedPickups(preset.pickups);
+            setSelectedAmp(preset.amp || '');
+            setSelectedPedals(preset.pedals);
+            setSelectedStyle(preset.style);
+            if (artists.includes(preset.artist)) {
+              setSelectedArtist(preset.artist);
+              setCustomArtist('');
+            } else {
+              setSelectedArtist('custom');
+              setCustomArtist(preset.artist);
+            }
+            setAmpSettings(preset.settings);
+          };
+
+          const deletePreset = (id) => {
+            setSavedPresets(prev => prev.filter(p => p.id !== id));
+          };
+
+          useEffect(() => {
+            if (selectedAmp) {
+              const ampPresets = getAmpPresets(selectedAmp);
+              setAmpSettings(ampPresets);
+            }
+          }, [selectedAmp]);
+
+          useEffect(() => {
+            if (selectedGuitar && selectedPickups && selectedAmp && (selectedStyle || selectedArtist || customArtist)) {
+              applyAutoSettings();
+            }
+          }, [selectedGuitar, selectedPickups, selectedPedals, selectedStyle, selectedArtist, customArtist]);
+
+          return (
+            <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 text-white p-4">
+              <div className="max-w-6xl mx-auto">
+                <header className="text-center mb-8">
+                  <div className="flex items-center justify-center gap-3 mb-4">
+                    <Guitar className="w-10 h-10 text-purple-400" />
+                    <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                      Guitar Amp Auto-Tuner
+                    </h1>
+                    <Volume2 className="w-10 h-10 text-purple-400" />
+                  </div>
+                  <p className="text-gray-300 text-lg">Configurez automatiquement votre ampli selon votre équipement et style musical</p>
+                </header>
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <div className="lg:col-span-2 space-y-6">
+                    <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                      <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                        <Sliders className="w-5 h-5 text-blue-400" />
+                        Réglages de l'Ampli
+                      </h2>
+                      <div className="space-y-4">
+                        {getAmpControls(selectedAmp).map((param) => {
+                          if (param === 'bright' || param === 'vintage' || param === 'brilliance' || param === 'chorus' || param === 'vibrato') {
+                            return (
+                              <div key={param} className="flex items-center justify-between">
+                                <label className="text-sm font-medium text-gray-300 capitalize">{param}</label>
+                                <button
+                                  onClick={() => setAmpSettings(prev => ({
+                                    ...prev,
+                                    [param]: !prev[param]
+                                  }))}
+                                  className={`px-4 py-1 rounded text-sm font-medium transition-all ${
+                                    ampSettings[param] 
+                                      ? 'bg-blue-600 text-white' 
+                                      : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+                                  }`}
+                                >
+                                  {ampSettings[param] ? 'ON' : 'OFF'}
+                                </button>
+                              </div>
+                            );
+                          }
+                          
+                          const value = ampSettings[param] || 0;
+                          return (
+                            <div key={param}>
+                              <div className="flex justify-between items-center mb-2">
+                                <label className="text-sm font-medium text-gray-300 capitalize">{param}</label>
+                                <span className="text-sm text-purple-400 font-mono">{value}</span>
+                              </div>
+                              <input
+                                type="range"
+                                min="0"
+                                max="100"
+                                value={value}
+                                onChange={(e) => setAmpSettings(prev => ({
+                                  ...prev,
+                                  [param]: parseInt(e.target.value)
+                                }))}
+                                className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+                              />
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      <button
+                        onClick={applyAutoSettings}
+                        disabled={!selectedGuitar || !selectedPickups || !selectedAmp || (!selectedStyle && !selectedArtist && !customArtist)}
+                        className="w-full mt-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                      >
+                        Réglage Automatique
+                      </button>
+                    </div>
+
+                    <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                      <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                        <Save className="w-5 h-5 text-orange-400" />
+                        Gestion des Préréglages
+                      </h2>
+                      
+                      <button
+                        onClick={() => setShowSaveDialog(true)}
+                        className="w-full py-2 bg-orange-600 text-white rounded-lg font-medium hover:bg-orange-700 transition-all mb-4"
+                      >
+                        Sauvegarder le Préréglage
+                      </button>
+
+                      {showSaveDialog && (
+                        <div className="mb-4 p-4 bg-gray-700 rounded-lg">
+                          <input
+                            type="text"
+                            placeholder="Nom du préréglage..."
+                            value={presetName}
+                            onChange={(e) => setPresetName(e.target.value)}
+                            className="w-full p-2 bg-gray-600 border border-gray-500 rounded mb-3 focus:ring-2 focus:ring-orange-500"
+                          />
+                          <div className="flex gap-2">
+                            <button
+                              onClick={savePreset}
+                              className="flex-1 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-all"
+                            >
+                              Sauver
+                            </button>
+                            <button
+                              onClick={() => setShowSaveDialog(false)}
+                              className="flex-1 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition-all"
+                            >
+                              Annuler
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="space-y-2 max-h-64 overflow-y-auto">
+                        {savedPresets.map(preset => (
+                          <div key={preset.id} className="p-3 bg-gray-700 rounded-lg">
+                            <div className="flex justify-between items-start mb-2">
+                              <h4 className="font-medium text-white">{preset.name}</h4>
+                              <button
+                                onClick={() => deletePreset(preset.id)}
+                                className="text-red-400 hover:text-red-300 text-sm"
+                              >
+                                ✕
+                              </button>
+                            </div>
+                            <p className="text-xs text-gray-400 mb-2">
+                              {preset.guitar} • {preset.amp} • {preset.style || preset.artist}
+                            </p>
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() => loadPreset(preset)}
+                                className="flex-1 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-all"
+                              >
+                                Charger
+                              </button>
+                              <button className="py-1 px-3 bg-gray-600 text-white text-sm rounded hover:bg-gray-500 transition-all">
+                                <Share2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                        {savedPresets.length === 0 && (
+                          <p className="text-gray-400 text-sm text-center py-4">Aucun préréglage sauvegardé</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {(selectedGuitar || selectedPickups || selectedAmp || selectedPedals.length > 0 || selectedStyle || selectedArtist || customArtist) && (
+                  <div className="mt-8 bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                    <h3 className="text-lg font-semibold mb-3 text-purple-400">Configuration Actuelle</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 text-sm">
+                      {selectedGuitar && (
+                        <div className="bg-gray-700 p-3 rounded-lg">
+                          <span className="text-gray-400">Guitare:</span>
+                          <p className="text-white font-medium">{selectedGuitar}</p>
+                        </div>
+                      )}
+                      {selectedPickups && (
+                        <div className="bg-gray-700 p-3 rounded-lg">
+                          <span className="text-gray-400">Micros:</span>
+                          <p className="text-white font-medium">{selectedPickups}</p>
+                        </div>
+                      )}
+                      {selectedAmp && (
+                        <div className="bg-gray-700 p-3 rounded-lg">
+                          <span className="text-gray-400">Ampli:</span>
+                          <p className="text-white font-medium">{selectedAmp}</p>
+                        </div>
+                      )}
+                      {selectedPedals.length > 0 && (
+                        <div className="bg-gray-700 p-3 rounded-lg">
+                          <span className="text-gray-400">Pédales:</span>
+                          <p className="text-white font-medium">{selectedPedals.join(', ')}</p>
+                        </div>
+                      )}
+                      {(selectedStyle || selectedArtist || customArtist) && (
+                        <div className="bg-gray-700 p-3 rounded-lg">
+                          <span className="text-gray-400">Style/Artiste:</span>
+                          <p className="text-white font-medium">{selectedStyle || (selectedArtist === 'custom' ? customArtist : selectedArtist)}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<GuitarAmpTuner />);
     </script>
 </body>
-</html>
+</html> backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                      <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                        <Guitar className="w-5 h-5 text-purple-400" />
+                        Sélection Guitare & Ampli
+                      </h2>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-2 text-gray-300">Modèle de guitare</label>
+                          <select 
+                            value={selectedGuitar} 
+                            onChange={(e) => setSelectedGuitar(e.target.value)}
+                            className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                          >
+                            <option value="">Choisir une guitare...</option>
+                            {guitars.map(guitar => (
+                              <option key={guitar} value={guitar}>{guitar}</option>
+                            ))}
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2 text-gray-300">Type de micros</label>
+                          <select 
+                            value={selectedPickups} 
+                            onChange={(e) => setSelectedPickups(e.target.value)}
+                            className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                          >
+                            <option value="">Choisir des micros...</option>
+                            {pickupTypes.map(pickup => (
+                              <option key={pickup} value={pickup}>{pickup}</option>
+                            ))}
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2 text-gray-300">Modèle d'ampli</label>
+                          <select 
+                            value={selectedAmp} 
+                            onChange={(e) => setSelectedAmp(e.target.value)}
+                            className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                          >
+                            <option value="">Choisir un ampli...</option>
+                            {ampTypes.map(amp => (
+                              <option key={amp} value={amp}>{amp}</option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                      <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                        <Zap className="w-5 h-5 text-yellow-400" />
+                        Configuration des Pédales
+                      </h2>
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                        {pedalTypes.map(pedal => (
+                          <button
+                            key={pedal}
+                            onClick={() => handlePedalToggle(pedal)}
+                            className={`p-3 rounded-lg border-2 transition-all text-sm font-medium ${
+                              selectedPedals.includes(pedal)
+                                ? 'bg-purple-600 border-purple-500 text-white shadow-lg'
+                                : 'bg-gray-700 border-gray-600 text-gray-300 hover:border-purple-500'
+                            }`}
+                          >
+                            {pedal}
+                          </button>
+                        ))}
+                      </div>
+                      {selectedPedals.length > 0 && (
+                        <div className="mt-4 p-3 bg-gray-700 rounded-lg">
+                          <p className="text-sm text-gray-300">Chaîne de signal: Guitare → {selectedPedals.join(' → ')} → Ampli</p>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                      <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                        <Music className="w-5 h-5 text-green-400" />
+                        Style Musical & Artiste
+                      </h2>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-2 text-gray-300">Style musical</label>
+                          <select 
+                            value={selectedStyle} 
+                            onChange={(e) => setSelectedStyle(e.target.value)}
+                            className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                          >
+                            <option value="">Choisir un style...</option>
+                            {musicalStyles.map(style => (
+                              <option key={style} value={style}>{style}</option>
+                            ))}
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2 text-gray-300">Artiste de référence</label>
+                          <select 
+                            value={selectedArtist} 
+                            onChange={(e) => {
+                              setSelectedArtist(e.target.value);
+                              if (e.target.value !== 'custom') {
+                                setCustomArtist('');
+                              }
+                            }}
+                            className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent mb-2"
+                          >
+                            <option value="">Choisir un artiste...</option>
+                            {artists.map(artist => (
+                              <option key={artist} value={artist}>{artist}</option>
+                            ))}
+                            <option value="custom">✏️ Saisir un autre artiste</option>
+                          </select>
+                          {selectedArtist === 'custom' && (
+                            <input
+                              type="text"
+                              placeholder="Nom de l'artiste..."
+                              value={customArtist}
+                              onChange={(e) => setCustomArtist(e.target.value)}
+                              className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                            />
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-6">
+                    <div className="bg-gray-800/50
