@@ -12,35 +12,351 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎸</text></svg>">
     <style>
-        .slider::-webkit-slider-thumb {
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            background: linear-gradient(45deg, #8b5cf6, #ec4899);
-            border-radius: 50%;
-            cursor: pointer;
-        }
-        .slider::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            background: linear-gradient(45deg, #8b5cf6, #ec4899);
-            border-radius: 50%;
-            cursor: pointer;
-            border: none;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Righteous&family=Roboto+Condensed:wght@400;700&display=swap');
+        
         body {
             margin: 0;
             padding: 0;
+            font-family: 'Roboto Condensed', sans-serif;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 25%, #FF8C00 50%, #D2691E 75%, #8B4513 100%);
+            background-attachment: fixed;
         }
+        
+        .vintage-container {
+            background: linear-gradient(145deg, #2F1B14 0%, #4A2C20 50%, #2F1B14 100%);
+            border: 4px solid #D2691E;
+            border-radius: 25px;
+            box-shadow: 
+                0 0 30px rgba(255, 140, 0, 0.4),
+                inset 0 2px 10px rgba(255, 140, 0, 0.1),
+                0 8px 32px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .vintage-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #FF8C00, #D2691E, #FF8C00);
+            border-radius: 27px;
+            z-index: -1;
+        }
+        
+        .orange-panel {
+            background: linear-gradient(145deg, #FF8C00 0%, #FF7F00 50%, #FF6B00 100%);
+            border: 3px solid #B8860B;
+            border-radius: 15px;
+            box-shadow: 
+                inset 0 2px 8px rgba(255, 255, 255, 0.2),
+                inset 0 -2px 8px rgba(139, 69, 19, 0.3),
+                0 4px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .orange-panel::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+            border-radius: 2px;
+        }
+        
+        .cream-panel {
+            background: linear-gradient(145deg, #FFF8DC 0%, #F5DEB3 50%, #DEB887 100%);
+            border: 2px solid #D2691E;
+            border-radius: 12px;
+            box-shadow: 
+                inset 0 1px 4px rgba(255, 255, 255, 0.6),
+                inset 0 -1px 4px rgba(139, 69, 19, 0.2),
+                0 2px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .vintage-knob {
+            width: 24px;
+            height: 24px;
+            background: radial-gradient(circle at 30% 30%, #FFD700, #B8860B, #8B4513);
+            border: 3px solid #4A2C20;
+            border-radius: 50%;
+            box-shadow: 
+                inset 0 2px 4px rgba(255, 255, 255, 0.4),
+                inset 0 -2px 4px rgba(139, 69, 19, 0.4),
+                0 3px 6px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: #2F1B14;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+        }
+        
+        .vintage-knob::before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 8px;
+            background: #2F1B14;
+            border-radius: 1px;
+            box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);
+        }
+        
+        .vintage-slider {
+            appearance: none;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(to right, #8B4513 0%, #D2691E 50%, #FF8C00 100%);
+            border: 2px solid #4A2C20;
+            border-radius: 6px;
+            outline: none;
+            box-shadow: 
+                inset 0 2px 4px rgba(0, 0, 0, 0.3),
+                0 1px 2px rgba(255, 140, 0, 0.2);
+            cursor: pointer;
+        }
+        
+        .vintage-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: radial-gradient(circle at 30% 30%, #FFD700, #B8860B, #8B4513);
+            border: 3px solid #4A2C20;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 
+                inset 0 2px 4px rgba(255, 255, 255, 0.4),
+                inset 0 -2px 4px rgba(139, 69, 19, 0.4),
+                0 3px 6px rgba(0, 0, 0, 0.3);
+            transition: all 0.1s ease;
+        }
+        
+        .vintage-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 
+                inset 0 2px 4px rgba(255, 255, 255, 0.5),
+                inset 0 -2px 4px rgba(139, 69, 19, 0.3),
+                0 4px 8px rgba(0, 0, 0, 0.4);
+        }
+        
+        .vintage-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: radial-gradient(circle at 30% 30%, #FFD700, #B8860B, #8B4513);
+            border: 3px solid #4A2C20;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 
+                inset 0 2px 4px rgba(255, 255, 255, 0.4),
+                inset 0 -2px 4px rgba(139, 69, 19, 0.4),
+                0 3px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        .vintage-button {
+            background: linear-gradient(145deg, #FF8C00 0%, #FF7F00 50%, #FF6B00 100%);
+            border: 3px solid #B8860B;
+            border-radius: 12px;
+            color: #2F1B14;
+            font-weight: bold;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
+            box-shadow: 
+                inset 0 2px 4px rgba(255, 255, 255, 0.2),
+                inset 0 -2px 4px rgba(139, 69, 19, 0.3),
+                0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+        }
+        
+        .vintage-button:hover {
+            background: linear-gradient(145deg, #FFB84D 0%, #FF9500 50%, #FF8C00 100%);
+            transform: translateY(-1px);
+            box-shadow: 
+                inset 0 2px 4px rgba(255, 255, 255, 0.3),
+                inset 0 -2px 4px rgba(139, 69, 19, 0.2),
+                0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .vintage-button:active {
+            transform: translateY(1px);
+            box-shadow: 
+                inset 0 1px 2px rgba(139, 69, 19, 0.4),
+                0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .vintage-button:disabled {
+            background: linear-gradient(145deg, #A0522D 0%, #8B4513 50%, #654321 100%);
+            color: #DEB887;
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .vintage-text {
+            color: #FFF8DC;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .vintage-title {
+            font-family: 'Righteous', cursive;
+            color: #FFD700;
+            text-shadow: 
+                2px 2px 4px rgba(0, 0, 0, 0.7),
+                0 0 10px rgba(255, 140, 0, 0.5);
+        }
+        
+        .vintage-subtitle {
+            color: #DEB887;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+        }
+        
+        .pedal-vintage {
+            background: linear-gradient(145deg, #8B4513 0%, #A0522D 50%, #8B4513 100%);
+            border: 2px solid #D2691E;
+            border-radius: 8px;
+            color: #FFF8DC;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+            box-shadow: 
+                inset 0 1px 3px rgba(255, 140, 0, 0.2),
+                0 3px 6px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
+        }
+        
+        .pedal-vintage:hover {
+            border-color: #FF8C00;
+            box-shadow: 
+                inset 0 1px 3px rgba(255, 140, 0, 0.3),
+                0 0 10px rgba(255, 140, 0, 0.4);
+        }
+        
+        .pedal-vintage.active {
+            background: linear-gradient(145deg, #FF8C00 0%, #FF7F00 50%, #FF6B00 100%);
+            color: #2F1B14;
+            border-color: #B8860B;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
+            box-shadow: 
+                inset 0 2px 4px rgba(255, 255, 255, 0.2),
+                0 0 15px rgba(255, 140, 0, 0.6);
+        }
+        
         .icon {
-            width: 1.25rem;
-            height: 1.25rem;
+            width: 1.5rem;
+            height: 1.5rem;
             display: inline-block;
             vertical-align: middle;
+            filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.5));
         }
+        
         .icon-lg {
-            width: 2.5rem;
-            height: 2.5rem;
+            width: 3rem;
+            height: 3rem;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.7));
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .vintage-container {
+                margin: 0.5rem;
+                padding: 1rem !important;
+                border-radius: 15px;
+            }
+            
+            .orange-panel, .cream-panel {
+                padding: 1rem !important;
+                margin-bottom: 1rem;
+            }
+            
+            .vintage-title {
+                font-size: 2rem !important;
+            }
+            
+            .vintage-button {
+                padding: 0.75rem 1rem !important;
+                font-size: 0.9rem !important;
+            }
+            
+            .icon-lg {
+                width: 2rem;
+                height: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .vintage-title {
+                font-size: 1.5rem !important;
+            }
+            
+            .orange-panel h2 {
+                font-size: 1.25rem !important;
+            }
+        }
+        
+        /* Grid responsive fixes */
+        .responsive-grid {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .responsive-grid.md-cols-2 { grid-template-columns: repeat(2, 1fr); }
+            .responsive-grid.md-cols-3 { grid-template-columns: repeat(3, 1fr); }
+        }
+        
+        @media (min-width: 1024px) {
+            .responsive-grid.lg-cols-3 { grid-template-columns: repeat(3, 1fr); }
+            .responsive-grid.lg-cols-5 { grid-template-columns: repeat(5, 1fr); }
+        }
+        
+        /* Fix for select and input elements */
+        .vintage-select option {
+            background: #FFF8DC;
+            color: #2F1B14;
+            padding: 0.5rem;
+        }
+        
+        .vintage-input::placeholder,
+        .vintage-select option:first-child {
+            color: #8B4513;
+            opacity: 0.8;
+        }
+        
+        .vintage-input {
+            background: linear-gradient(145deg, #FFF8DC 0%, #F5DEB3 100%);
+            border: 2px solid #8B4513;
+            border-radius: 8px;
+            color: #2F1B14;
+            box-shadow: inset 0 1px 3px rgba(139, 69, 19, 0.2);
+        }
+        
+        .vintage-input:focus {
+            border-color: #FF8C00;
+            box-shadow: 
+                inset 0 1px 3px rgba(139, 69, 19, 0.2),
+                0 0 8px rgba(255, 140, 0, 0.4);
+        }
+        
+        .vintage-select {
+            background: linear-gradient(145deg, #FFF8DC 0%, #F5DEB3 100%);
+            border: 2px solid #8B4513;
+            border-radius: 8px;
+            color: #2F1B14;
+            box-shadow: inset 0 1px 3px rgba(139, 69, 19, 0.2);
+        }
+        
+        .vintage-select:focus {
+            border-color: #FF8C00;
+            box-shadow: 
+                inset 0 1px 3px rgba(139, 69, 19, 0.2),
+                0 0 8px rgba(255, 140, 0, 0.4);
         }
     </style>
 </head>
@@ -50,40 +366,40 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        // Icônes SVG simples pour remplacer Lucide
+        // Icônes SVG simples avec style vintage
         const Icons = {
             Guitar: () => (
-                <svg className="icon" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="icon" fill="#FFD700" viewBox="0 0 24 24" style={{filter: 'drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.5))'}}>
                     <path d="M12 2L8 6v4l4-4 4 4V6l-4-4zM6 8v8c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V8l-6 6-6-6z"/>
                 </svg>
             ),
             Music: () => (
-                <svg className="icon" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="icon" fill="#FFD700" viewBox="0 0 24 24" style={{filter: 'drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.5))'}}>
                     <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
                 </svg>
             ),
             Save: () => (
-                <svg className="icon" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="icon" fill="#FFD700" viewBox="0 0 24 24" style={{filter: 'drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.5))'}}>
                     <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/>
                 </svg>
             ),
             Share2: () => (
-                <svg className="icon" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="icon" fill="#FFD700" viewBox="0 0 24 24" style={{filter: 'drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.5))'}}>
                     <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.50-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/>
                 </svg>
             ),
             Volume2: () => (
-                <svg className="icon icon-lg" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="icon-lg" fill="#FFD700" viewBox="0 0 24 24" style={{filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.7))'}}>
                     <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
                 </svg>
             ),
             Sliders: () => (
-                <svg className="icon" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="icon" fill="#FFD700" viewBox="0 0 24 24" style={{filter: 'drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.5))'}}>
                     <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/>
                 </svg>
             ),
             Zap: () => (
-                <svg className="icon" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="icon" fill="#FFD700" viewBox="0 0 24 24" style={{filter: 'drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.5))'}}>
                     <path d="M13 2.05v3.03c3.39.49 6 3.39 6 6.92 0 .9-.18 1.75-.48 2.54l2.6 1.53c.56-1.24.88-2.62.88-4.07 0-5.18-3.95-9.45-9-9.95zM12 19c-3.87 0-7-3.13-7-7 0-3.53 2.61-6.43 6-6.92V2.05c-5.06.5-9 4.76-9 9.95 0 5.52 4.47 10 9.99 10 3.31 0 6.24-1.61 8.06-4.09l-2.6-1.53C16.17 17.98 14.21 19 12 19z"/>
                 </svg>
             )
@@ -94,6 +410,7 @@
           const [selectedPickups, setSelectedPickups] = useState('');
           const [selectedAmp, setSelectedAmp] = useState('');
           const [selectedPedals, setSelectedPedals] = useState([]);
+          const [pedalSettings, setPedalSettings] = useState({});
           const [selectedStyle, setSelectedStyle] = useState('');
           const [selectedArtist, setSelectedArtist] = useState('');
           const [customArtist, setCustomArtist] = useState('');
@@ -190,6 +507,60 @@
             'Compresseur',
             'Noise Gate'
           ];
+
+          const getPedalControls = (pedalType) => {
+            switch (pedalType) {
+              case 'Overdrive':
+                return { level: 70, drive: 40, tone: 60 };
+              case 'Distortion':
+                return { level: 65, gain: 60, tone: 55 };
+              case 'Fuzz':
+                return { level: 60, fuzz: 70, tone: 50 };
+              case 'Delay':
+                return { mix: 25, time: 300, feedback: 35 };
+              case 'Reverb':
+                return { mix: 30, size: 50, tone: 60 };
+              case 'Chorus':
+                return { mix: 40, speed: 50, depth: 45 };
+              case 'Phaser':
+                return { mix: 50, speed: 30, depth: 60 };
+              case 'Wah':
+                return { position: 50, sensitivity: 70 };
+              case 'Compresseur':
+                return { level: 75, ratio: 40, attack: 30 };
+              case 'Noise Gate':
+                return { threshold: 25, release: 50 };
+              default:
+                return {};
+            }
+          };
+
+          const getPedalParameterNames = (pedalType) => {
+            switch (pedalType) {
+              case 'Overdrive':
+                return { level: 'Level', drive: 'Drive', tone: 'Tone' };
+              case 'Distortion':
+                return { level: 'Level', gain: 'Gain', tone: 'Tone' };
+              case 'Fuzz':
+                return { level: 'Level', fuzz: 'Fuzz', tone: 'Tone' };
+              case 'Delay':
+                return { mix: 'Mix', time: 'Time (ms)', feedback: 'Feedback' };
+              case 'Reverb':
+                return { mix: 'Mix', size: 'Size', tone: 'Tone' };
+              case 'Chorus':
+                return { mix: 'Mix', speed: 'Speed', depth: 'Depth' };
+              case 'Phaser':
+                return { mix: 'Mix', speed: 'Speed', depth: 'Depth' };
+              case 'Wah':
+                return { position: 'Position', sensitivity: 'Sensitivity' };
+              case 'Compresseur':
+                return { level: 'Level', ratio: 'Ratio', attack: 'Attack' };
+              case 'Noise Gate':
+                return { threshold: 'Threshold', release: 'Release' };
+              default:
+                return {};
+            }
+          };
 
           const musicalStyles = [
             'Rock classique',
@@ -371,15 +742,36 @@
                 break;
             }
 
-            // Ajustements basés sur les pédales
+            // Ajustements basés sur les pédales et leurs réglages
             if (selectedPedals.includes('Overdrive') && availableControls.includes('gain')) {
-              settings.gain = Math.max(settings.gain - 15, 0);
+              const overdriveSettings = pedalSettings['Overdrive'];
+              const driveLevel = overdriveSettings?.drive || 40;
+              const gainReduction = Math.floor(driveLevel / 3); // Plus de drive = moins besoin de gain ampli
+              settings.gain = Math.max(settings.gain - gainReduction, 0);
+            }
+            if (selectedPedals.includes('Distortion') && availableControls.includes('gain')) {
+              const distortionSettings = pedalSettings['Distortion'];
+              const gainLevel = distortionSettings?.gain || 60;
+              const gainReduction = Math.floor(gainLevel / 2);
+              settings.gain = Math.max(settings.gain - gainReduction, 0);
             }
             if (selectedPedals.includes('Delay') && availableControls.includes('reverb')) {
-              settings.reverb = Math.max(settings.reverb - 10, 0);
+              const delaySettings = pedalSettings['Delay'];
+              const mixLevel = delaySettings?.mix || 25;
+              const reverbReduction = Math.floor(mixLevel / 2); // Plus de delay = moins de reverb
+              settings.reverb = Math.max(settings.reverb - reverbReduction, 0);
             }
             if (selectedPedals.includes('Reverb') && availableControls.includes('reverb')) {
-              settings.reverb = Math.min(settings.reverb + 20, 100);
+              const reverbPedalSettings = pedalSettings['Reverb'];
+              const mixLevel = reverbPedalSettings?.mix || 30;
+              const reverbIncrease = Math.floor(mixLevel / 2);
+              settings.reverb = Math.min(settings.reverb + reverbIncrease, 100);
+            }
+            if (selectedPedals.includes('Compresseur') && availableControls.includes('gain')) {
+              const compSettings = pedalSettings['Compresseur'];
+              const ratio = compSettings?.ratio || 40;
+              const gainReduction = Math.floor(ratio / 8); // Compression permet de réduire le gain
+              settings.gain = Math.max(settings.gain - gainReduction, 0);
             }
 
             return settings;
@@ -391,11 +783,23 @@
           };
 
           const handlePedalToggle = (pedal) => {
-            setSelectedPedals(prev => 
-              prev.includes(pedal) 
-                ? prev.filter(p => p !== pedal)
-                : [...prev, pedal]
-            );
+            setSelectedPedals(prev => {
+              if (prev.includes(pedal)) {
+                // Retirer la pédale et ses réglages
+                const newSettings = { ...pedalSettings };
+                delete newSettings[pedal];
+                setPedalSettings(newSettings);
+                return prev.filter(p => p !== pedal);
+              } else {
+                // Ajouter la pédale avec ses réglages par défaut
+                const defaultSettings = getPedalControls(pedal);
+                setPedalSettings(prev => ({
+                  ...prev,
+                  [pedal]: defaultSettings
+                }));
+                return [...prev, pedal];
+              }
+            });
           };
 
           const savePreset = () => {
@@ -407,6 +811,7 @@
                 pickups: selectedPickups,
                 amp: selectedAmp,
                 pedals: [...selectedPedals],
+                pedalSettings: { ...pedalSettings },
                 style: selectedStyle,
                 artist: selectedArtist === 'custom' ? customArtist : selectedArtist,
                 settings: { ...ampSettings }
@@ -422,6 +827,7 @@
             setSelectedPickups(preset.pickups);
             setSelectedAmp(preset.amp || '');
             setSelectedPedals(preset.pedals);
+            setPedalSettings(preset.pedalSettings || {});
             setSelectedStyle(preset.style);
             if (artists.includes(preset.artist)) {
               setSelectedArtist(preset.artist);
@@ -466,351 +872,813 @@
             if (selectedGuitar && selectedPickups && selectedAmp && (selectedStyle || selectedArtist || customArtist)) {
               applyAutoSettings();
             }
-          }, [selectedGuitar, selectedPickups, selectedPedals, selectedStyle, selectedArtist, customArtist]);
+          }, [selectedGuitar, selectedPickups, selectedPedals, pedalSettings, selectedStyle, selectedArtist, customArtist]);
 
           return (
-            <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 text-white p-4">
-              <div className="max-w-6xl mx-auto">
-                <header className="text-center mb-8">
-                  <div className="flex items-center justify-center gap-3 mb-4">
+            <div style={{
+              minHeight: '100vh',
+              padding: '1rem',
+              fontFamily: "'Roboto Condensed', sans-serif"
+            }}>
+              <div style={{
+                maxWidth: '1200px',
+                margin: '0 auto'
+              }} className="vintage-container">
+                <header style={{textAlign: 'center', marginBottom: '2rem', padding: '1rem 0'}}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '1rem',
+                    marginBottom: '1.5rem',
+                    flexWrap: 'wrap'
+                  }}>
                     <Icons.Guitar />
-                    <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                    <h1 className="vintage-title" style={{
+                      fontSize: '3rem',
+                      fontFamily: "'Righteous', cursive",
+                      margin: 0,
+                      textAlign: 'center'
+                    }}>
                       Guitar Amp Auto-Tuner
                     </h1>
                     <Icons.Volume2 />
                   </div>
-                  <p className="text-gray-300 text-lg">Configurez automatiquement votre ampli selon votre équipement et style musical</p>
+                  <p className="vintage-subtitle" style={{fontSize: '1.25rem', margin: 0}}>
+                    Configurez automatiquement votre ampli selon votre équipement et style musical
+                  </p>
                 </header>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                  <div className="lg:col-span-2 space-y-6">
-                    <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
-                      <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                        <Icons.Guitar />
-                        Sélection Guitare & Ampli
-                      </h2>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
-                          <label className="block text-sm font-medium mb-2 text-gray-300">Modèle de guitare</label>
-                          <select 
-                            value={selectedGuitar} 
-                            onChange={(e) => setSelectedGuitar(e.target.value)}
-                            className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                          >
-                            <option value="">Choisir une guitare...</option>
-                            {guitars.map(guitar => (
-                              <option key={guitar} value={guitar}>{guitar}</option>
-                            ))}
-                          </select>
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr',
+                  gap: '2rem'
+                }} className="responsive-grid">
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: '2fr 1fr',
+                    gap: '2rem',
+                    alignItems: 'start'
+                  }} className="responsive-grid">
+                    <div style={{display: 'flex', flexDirection: 'column', gap: '2rem'}}>
+                      <div className="orange-panel">
+                        <h2 className="vintage-text" style={{
+                          fontSize: '1.5rem',
+                          fontWeight: 'bold',
+                          marginBottom: '1.5rem',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.75rem'
+                        }}>
+                          <Icons.Guitar />
+                          Sélection Guitare & Ampli
+                        </h2>
+                        <div className="responsive-grid md-cols-3" style={{gap: '1.5rem'}}>
+                          <div>
+                            <label style={{
+                              display: 'block',
+                              fontSize: '0.875rem',
+                              fontWeight: 'bold',
+                              marginBottom: '0.75rem'
+                            }} className="vintage-text">Modèle de guitare</label>
+                            <select 
+                              value={selectedGuitar} 
+                              onChange={(e) => setSelectedGuitar(e.target.value)}
+                              className="vintage-select"
+                              style={{
+                                width: '100%',
+                                padding: '0.75rem',
+                                fontWeight: '600'
+                              }}
+                            >
+                              <option value="">Choisir une guitare...</option>
+                              {guitars.map(guitar => (
+                                <option key={guitar} value={guitar}>{guitar}</option>
+                              ))}
+                            </select>
+                          </div>
+                          <div>
+                            <label style={{
+                              display: 'block',
+                              fontSize: '0.875rem',
+                              fontWeight: 'bold',
+                              marginBottom: '0.75rem'
+                            }} className="vintage-text">Type de micros</label>
+                            <select 
+                              value={selectedPickups} 
+                              onChange={(e) => setSelectedPickups(e.target.value)}
+                              className="vintage-select"
+                              style={{
+                                width: '100%',
+                                padding: '0.75rem',
+                                fontWeight: '600'
+                              }}
+                            >
+                              <option value="">Choisir des micros...</option>
+                              {pickupTypes.map(pickup => (
+                                <option key={pickup} value={pickup}>{pickup}</option>
+                              ))}
+                            </select>
+                          </div>
+                          <div>
+                            <label style={{
+                              display: 'block',
+                              fontSize: '0.875rem',
+                              fontWeight: 'bold',
+                              marginBottom: '0.75rem'
+                            }} className="vintage-text">Modèle d'ampli</label>
+                            <select 
+                              value={selectedAmp} 
+                              onChange={(e) => setSelectedAmp(e.target.value)}
+                              className="vintage-select"
+                              style={{
+                                width: '100%',
+                                padding: '0.75rem',
+                                fontWeight: '600'
+                              }}
+                            >
+                              <option value="">Choisir un ampli...</option>
+                              {ampTypes.map(amp => (
+                                <option key={amp} value={amp}>{amp}</option>
+                              ))}
+                            </select>
+                          </div>
                         </div>
-                        <div>
-                          <label className="block text-sm font-medium mb-2 text-gray-300">Type de micros</label>
-                          <select 
-                            value={selectedPickups} 
-                            onChange={(e) => setSelectedPickups(e.target.value)}
-                            className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                          >
-                            <option value="">Choisir des micros...</option>
-                            {pickupTypes.map(pickup => (
-                              <option key={pickup} value={pickup}>{pickup}</option>
-                            ))}
-                          </select>
+                      </div>
+
+                      <div className="orange-panel">
+                        <h2 className="vintage-text" style={{
+                          fontSize: '1.5rem',
+                          fontWeight: 'bold',
+                          marginBottom: '1.5rem',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.75rem'
+                        }}>
+                          <Icons.Zap />
+                          Configuration des Pédales
+                        </h2>
+                        <div className="responsive-grid lg-cols-5 md-cols-3" style={{gap: '1rem'}}>
+                          {pedalTypes.map(pedal => (
+                            <button
+                              key={pedal}
+                              onClick={() => handlePedalToggle(pedal)}
+                              className={`${selectedPedals.includes(pedal) ? 'pedal-vintage active' : 'pedal-vintage'}`}
+                              style={{
+                                padding: '1rem',
+                                fontSize: '0.875rem',
+                                fontWeight: 'bold',
+                                transition: 'all 0.2s ease'
+                              }}
+                            >
+                              {pedal}
+                            </button>
+                          ))}
                         </div>
-                        <div>
-                          <label className="block text-sm font-medium mb-2 text-gray-300">Modèle d'ampli</label>
-                          <select 
-                            value={selectedAmp} 
-                            onChange={(e) => setSelectedAmp(e.target.value)}
-                            className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                          >
-                            <option value="">Choisir un ampli...</option>
-                            {ampTypes.map(amp => (
-                              <option key={amp} value={amp}>{amp}</option>
-                            ))}
-                          </select>
+                        {selectedPedals.length > 0 && (
+                          <div className="cream-panel" style={{marginTop: '1.5rem', padding: '1rem'}}>
+                            <p style={{
+                              fontSize: '0.875rem',
+                              fontWeight: 'bold',
+                              color: '#2F1B14',
+                              margin: 0
+                            }}>
+                              Chaîne de signal: Guitare → {selectedPedals.join(' → ')} → Ampli
+                            </p>
+                          </div>
+                        )}
+
+                        {/* Réglages des pédales */}
+                        {selectedPedals.length > 0 && (
+                          <div style={{marginTop: '2rem'}}>
+                            <h3 className="vintage-title" style={{fontSize: '1.25rem', marginBottom: '1.5rem'}}>
+                              Réglages des Effets
+                            </h3>
+                            <div style={{display: 'flex', flexDirection: 'column', gap: '1.5rem'}}>
+                              {selectedPedals.map(pedal => {
+                                const controls = getPedalControls(pedal);
+                                const paramNames = getPedalParameterNames(pedal);
+                                const currentSettings = pedalSettings[pedal] || controls;
+                                
+                                return (
+                                  <div key={pedal} className="cream-panel" style={{padding: '1.25rem'}}>
+                                    <h4 style={{
+                                      fontWeight: 'bold',
+                                      marginBottom: '1rem',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      gap: '0.75rem',
+                                      color: '#2F1B14'
+                                    }}>
+                                      <span style={{
+                                        width: '1rem',
+                                        height: '1rem',
+                                        background: 'linear-gradient(to right, #FF8C00, #FF6B00)',
+                                        borderRadius: '50%',
+                                        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
+                                      }}></span>
+                                      {pedal}
+                                    </h4>
+                                    <div className="responsive-grid md-cols-3" style={{gap: '1.25rem'}}>
+                                      {Object.keys(controls).map(param => {
+                                        const value = currentSettings[param] || controls[param];
+                                        const displayName = paramNames[param] || param;
+                                        const isTime = param === 'time';
+                                        const maxValue = isTime ? 1000 : 100;
+                                        
+                                        return (
+                                          <div key={param}>
+                                            <div style={{
+                                              display: 'flex',
+                                              justifyContent: 'space-between',
+                                              alignItems: 'center',
+                                              marginBottom: '0.75rem'
+                                            }}>
+                                              <label style={{
+                                                fontSize: '0.875rem',
+                                                fontWeight: 'bold',
+                                                color: '#2F1B14'
+                                              }}>{displayName}</label>
+                                              <span style={{
+                                                fontSize: '0.875rem',
+                                                fontWeight: 'bold',
+                                                color: '#8B4513'
+                                              }}>
+                                                {isTime ? `${value}ms` : value}
+                                              </span>
+                                            </div>
+                                            <input
+                                              type="range"
+                                              min={isTime ? 50 : 0}
+                                              max={maxValue}
+                                              step={isTime ? 10 : 1}
+                                              value={value}
+                                              onChange={(e) => {
+                                                const newValue = parseInt(e.target.value);
+                                                setPedalSettings(prev => ({
+                                                  ...prev,
+                                                  [pedal]: {
+                                                    ...prev[pedal],
+                                                    [param]: newValue
+                                                  }
+                                                }));
+                                              }}
+                                              className="vintage-slider"
+                                            />
+                                          </div>
+                                        );
+                                      })}
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="orange-panel">
+                        <h2 className="vintage-text" style={{
+                          fontSize: '1.5rem',
+                          fontWeight: 'bold',
+                          marginBottom: '1.5rem',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.75rem'
+                        }}>
+                          <Icons.Music />
+                          Style Musical & Artiste
+                        </h2>
+                        <div className="responsive-grid md-cols-2" style={{gap: '1.5rem'}}>
+                          <div>
+                            <label style={{
+                              display: 'block',
+                              fontSize: '0.875rem',
+                              fontWeight: 'bold',
+                              marginBottom: '0.75rem'
+                            }} className="vintage-text">Style musical</label>
+                            <select 
+                              value={selectedStyle} 
+                              onChange={(e) => setSelectedStyle(e.target.value)}
+                              className="vintage-select"
+                              style={{
+                                width: '100%',
+                                padding: '0.75rem',
+                                fontWeight: '600'
+                              }}
+                            >
+                              <option value="">Choisir un style...</option>
+                              {musicalStyles.map(style => (
+                                <option key={style} value={style}>{style}</option>
+                              ))}
+                            </select>
+                          </div>
+                          <div>
+                            <label style={{
+                              display: 'block',
+                              fontSize: '0.875rem',
+                              fontWeight: 'bold',
+                              marginBottom: '0.75rem'
+                            }} className="vintage-text">Artiste de référence</label>
+                            <select 
+                              value={selectedArtist} 
+                              onChange={(e) => {
+                                setSelectedArtist(e.target.value);
+                                if (e.target.value !== 'custom') {
+                                  setCustomArtist('');
+                                }
+                              }}
+                              className="vintage-select"
+                              style={{
+                                width: '100%',
+                                padding: '0.75rem',
+                                fontWeight: '600',
+                                marginBottom: '0.75rem'
+                              }}
+                            >
+                              <option value="">Choisir un artiste...</option>
+                              {artists.map(artist => (
+                                <option key={artist} value={artist}>{artist}</option>
+                              ))}
+                              <option value="custom">✏️ Saisir un autre artiste</option>
+                            </select>
+                            {selectedArtist === 'custom' && (
+                              <input
+                                type="text"
+                                placeholder="Nom de l'artiste..."
+                                value={customArtist}
+                                onChange={(e) => setCustomArtist(e.target.value)}
+                                className="vintage-input"
+                                style={{
+                                  width: '100%',
+                                  padding: '0.75rem',
+                                  fontWeight: '600'
+                                }}
+                              />
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
 
-                    <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
-                      <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                        <Icons.Zap />
-                        Configuration des Pédales
-                      </h2>
-                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-                        {pedalTypes.map(pedal => (
-                          <button
-                            key={pedal}
-                            onClick={() => handlePedalToggle(pedal)}
-                            className={`p-3 rounded-lg border-2 transition-all text-sm font-medium ${
-                              selectedPedals.includes(pedal)
-                                ? 'bg-purple-600 border-purple-500 text-white shadow-lg'
-                                : 'bg-gray-700 border-gray-600 text-gray-300 hover:border-purple-500'
-                            }`}
-                          >
-                            {pedal}
-                          </button>
-                        ))}
-                      </div>
-                      {selectedPedals.length > 0 && (
-                        <div className="mt-4 p-3 bg-gray-700 rounded-lg">
-                          <p className="text-sm text-gray-300">Chaîne de signal: Guitare → {selectedPedals.join(' → ')} → Ampli</p>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
-                      <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                        <Icons.Music />
-                        Style Musical & Artiste
-                      </h2>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-medium mb-2 text-gray-300">Style musical</label>
-                          <select 
-                            value={selectedStyle} 
-                            onChange={(e) => setSelectedStyle(e.target.value)}
-                            className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                          >
-                            <option value="">Choisir un style...</option>
-                            {musicalStyles.map(style => (
-                              <option key={style} value={style}>{style}</option>
-                            ))}
-                          </select>
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium mb-2 text-gray-300">Artiste de référence</label>
-                          <select 
-                            value={selectedArtist} 
-                            onChange={(e) => {
-                              setSelectedArtist(e.target.value);
-                              if (e.target.value !== 'custom') {
-                                setCustomArtist('');
-                              }
-                            }}
-                            className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent mb-2"
-                          >
-                            <option value="">Choisir un artiste...</option>
-                            {artists.map(artist => (
-                              <option key={artist} value={artist}>{artist}</option>
-                            ))}
-                            <option value="custom">✏️ Saisir un autre artiste</option>
-                          </select>
-                          {selectedArtist === 'custom' && (
-                            <input
-                              type="text"
-                              placeholder="Nom de l'artiste..."
-                              value={customArtist}
-                              onChange={(e) => setCustomArtist(e.target.value)}
-                              className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                            />
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-6">
-                    <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
-                      <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                        <Icons.Sliders />
-                        Réglages de l'Ampli
-                      </h2>
-                      <div className="space-y-4">
-                        {getAmpControls(selectedAmp).map((param) => {
-                          // Noms d'affichage personnalisés pour les contrôles
-                          const displayNames = {
-                            'power_reduction': 'Power Reduction',
-                            'isa': 'ISA',
-                            'tone': 'Tone',
-                            'cut': 'Cut',
-                            'brilliance': 'Brilliance',
-                            'bright': 'Bright',
-                            'vintage': 'Vintage',
-                            'chorus': 'Chorus',
-                            'vibrato': 'Vibrato',
-                            'resonance': 'Resonance',
-                            'contour': 'Contour',
-                            'attenuator': 'Attenuator',
-                            'crunch': 'Crunch',
-                            'depth': 'Depth',
-                            'structure': 'Structure',
-                            'deep': 'Deep',
-                            'fat': 'Fat'
-                          };
-                          
-                          const displayName = displayNames[param] || param.charAt(0).toUpperCase() + param.slice(1);
-                          
-                          if (param === 'bright' || param === 'vintage' || param === 'brilliance' || param === 'chorus' || param === 'vibrato' || param === 'fat') {
+                    <div style={{minWidth: '300px'}}>
+                      <div className="cream-panel" style={{marginBottom: '2rem'}}>
+                        <h2 style={{
+                          fontSize: '1.5rem',
+                          fontWeight: 'bold',
+                          marginBottom: '1.5rem',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.75rem',
+                          color: '#2F1B14'
+                        }}>
+                          <Icons.Sliders />
+                          Réglages de l'Ampli
+                        </h2>
+                        <div style={{display: 'flex', flexDirection: 'column', gap: '1.25rem'}}>
+                          {getAmpControls(selectedAmp).map((param) => {
+                            const displayNames = {
+                              'power_reduction': 'Power Reduction',
+                              'isa': 'ISA',
+                              'tone': 'Tone',
+                              'cut': 'Cut',
+                              'brilliance': 'Brilliance',
+                              'bright': 'Bright',
+                              'vintage': 'Vintage',
+                              'chorus': 'Chorus',
+                              'vibrato': 'Vibrato',
+                              'resonance': 'Resonance',
+                              'contour': 'Contour',
+                              'attenuator': 'Attenuator',
+                              'crunch': 'Crunch',
+                              'depth': 'Depth',
+                              'structure': 'Structure',
+                              'deep': 'Deep',
+                              'fat': 'Fat'
+                            };
+                            
+                            const displayName = displayNames[param] || param.charAt(0).toUpperCase() + param.slice(1);
+                            
+                            if (param === 'bright' || param === 'vintage' || param === 'brilliance' || param === 'chorus' || param === 'vibrato' || param === 'fat') {
+                              return (
+                                <div key={param} style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'space-between',
+                                  padding: '0.5rem 0'
+                                }}>
+                                  <label style={{
+                                    fontSize: '1.125rem',
+                                    fontWeight: 'bold',
+                                    color: '#2F1B14'
+                                  }}>{displayName}</label>
+                                  <button
+                                    onClick={() => setAmpSettings(prev => ({
+                                      ...prev,
+                                      [param]: !prev[param]
+                                    }))}
+                                    className={`${ampSettings[param] ? 'vintage-button' : 'pedal-vintage'}`}
+                                    style={{
+                                      padding: '0.5rem 1.5rem',
+                                      fontSize: '0.875rem',
+                                      fontWeight: 'bold',
+                                      transition: 'all 0.2s ease'
+                                    }}
+                                  >
+                                    {ampSettings[param] ? 'ON' : 'OFF'}
+                                  </button>
+                                </div>
+                              );
+                            }
+                            
+                            const value = ampSettings[param] || 0;
                             return (
-                              <div key={param} className="flex items-center justify-between">
-                                <label className="text-sm font-medium text-gray-300">{displayName}</label>
-                                <button
-                                  onClick={() => setAmpSettings(prev => ({
+                              <div key={param}>
+                                <div style={{
+                                  display: 'flex',
+                                  justifyContent: 'space-between',
+                                  alignItems: 'center',
+                                  marginBottom: '0.75rem'
+                                }}>
+                                  <label style={{
+                                    fontSize: '1.125rem',
+                                    fontWeight: 'bold',
+                                    color: '#2F1B14'
+                                  }}>{displayName}</label>
+                                  <span className="vintage-knob">
+                                    {value}
+                                  </span>
+                                </div>
+                                <input
+                                  type="range"
+                                  min="0"
+                                  max="100"
+                                  value={value}
+                                  onChange={(e) => setAmpSettings(prev => ({
                                     ...prev,
-                                    [param]: !prev[param]
+                                    [param]: parseInt(e.target.value)
                                   }))}
-                                  className={`px-4 py-1 rounded text-sm font-medium transition-all ${
-                                    ampSettings[param] 
-                                      ? 'bg-blue-600 text-white' 
-                                      : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
-                                  }`}
-                                >
-                                  {ampSettings[param] ? 'ON' : 'OFF'}
-                                </button>
+                                  className="vintage-slider"
+                                />
                               </div>
                             );
-                          }
-                          
-                          const value = ampSettings[param] || 0;
-                          return (
-                            <div key={param}>
-                              <div className="flex justify-between items-center mb-2">
-                                <label className="text-sm font-medium text-gray-300">{displayName}</label>
-                                <span className="text-sm text-purple-400 font-mono">{value}</span>
-                              </div>
-                              <input
-                                type="range"
-                                min="0"
-                                max="100"
-                                value={value}
-                                onChange={(e) => setAmpSettings(prev => ({
-                                  ...prev,
-                                  [param]: parseInt(e.target.value)
-                                }))}
-                                className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
-                              />
-                            </div>
-                          );
-                        })}
+                          })}
+                        </div>
+
+                        <button
+                          onClick={applyAutoSettings}
+                          disabled={!selectedGuitar || !selectedPickups || !selectedAmp || (!selectedStyle && !selectedArtist && !customArtist)}
+                          className="vintage-button"
+                          style={{
+                            width: '100%',
+                            marginTop: '2rem',
+                            padding: '1rem',
+                            fontSize: '1.25rem',
+                            fontWeight: 'bold',
+                            transition: 'all 0.2s ease'
+                          }}
+                        >
+                          🎸 RÉGLAGE AUTOMATIQUE 🎸
+                        </button>
                       </div>
 
-                      <button
-                        onClick={applyAutoSettings}
-                        disabled={!selectedGuitar || !selectedPickups || !selectedAmp || (!selectedStyle && !selectedArtist && !customArtist)}
-                        className="w-full mt-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-                      >
-                        Réglage Automatique
-                      </button>
-                    </div>
+                      <div className="orange-panel">
+                        <h2 className="vintage-text" style={{
+                          fontSize: '1.5rem',
+                          fontWeight: 'bold',
+                          marginBottom: '1.5rem',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.75rem'
+                        }}>
+                          <Icons.Save />
+                          Gestion des Préréglages
+                        </h2>
+                        
+                        <button
+                          onClick={() => setShowSaveDialog(true)}
+                          className="vintage-button"
+                          style={{
+                            width: '100%',
+                            padding: '0.75rem',
+                            fontSize: '1.125rem',
+                            fontWeight: 'bold',
+                            marginBottom: '1.5rem',
+                            transition: 'all 0.2s ease'
+                          }}
+                        >
+                          💾 Sauvegarder le Préréglage
+                        </button>
 
-                    <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
-                      <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                        <Icons.Save />
-                        Gestion des Préréglages
-                      </h2>
-                      
-                      <button
-                        onClick={() => setShowSaveDialog(true)}
-                        className="w-full py-2 bg-orange-600 text-white rounded-lg font-medium hover:bg-orange-700 transition-all mb-4"
-                      >
-                        Sauvegarder le Préréglage
-                      </button>
-
-                      {showSaveDialog && (
-                        <div className="mb-4 p-4 bg-gray-700 rounded-lg">
-                          <input
-                            type="text"
-                            placeholder="Nom du préréglage..."
-                            value={presetName}
-                            onChange={(e) => setPresetName(e.target.value)}
-                            className="w-full p-2 bg-gray-600 border border-gray-500 rounded mb-3 focus:ring-2 focus:ring-orange-500"
-                          />
-                          <div className="flex gap-2">
-                            <button
-                              onClick={savePreset}
-                              className="flex-1 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-all"
-                            >
-                              Sauver
-                            </button>
-                            <button
-                              onClick={() => setShowSaveDialog(false)}
-                              className="flex-1 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition-all"
-                            >
-                              Annuler
-                            </button>
-                          </div>
-                        </div>
-                      )}
-
-                      <div className="space-y-2 max-h-64 overflow-y-auto">
-                        {savedPresets.map(preset => (
-                          <div key={preset.id} className="p-3 bg-gray-700 rounded-lg">
-                            <div className="flex justify-between items-start mb-2">
-                              <h4 className="font-medium text-white">{preset.name}</h4>
+                        {showSaveDialog && (
+                          <div className="cream-panel" style={{marginBottom: '1.5rem', padding: '1.25rem'}}>
+                            <input
+                              type="text"
+                              placeholder="Nom du préréglage..."
+                              value={presetName}
+                              onChange={(e) => setPresetName(e.target.value)}
+                              className="vintage-input"
+                              style={{
+                                width: '100%',
+                                padding: '0.75rem',
+                                fontWeight: '600',
+                                marginBottom: '1rem'
+                              }}
+                            />
+                            <div style={{display: 'flex', gap: '0.75rem'}}>
                               <button
-                                onClick={() => deletePreset(preset.id)}
-                                className="text-red-400 hover:text-red-300 text-sm"
+                                onClick={savePreset}
+                                className="vintage-button"
+                                style={{
+                                  flex: 1,
+                                  padding: '0.5rem',
+                                  fontSize: '0.875rem',
+                                  fontWeight: 'bold',
+                                  transition: 'all 0.2s ease'
+                                }}
                               >
-                                ✕
+                                ✅ Sauver
                               </button>
-                            </div>
-                            <p className="text-xs text-gray-400 mb-2">
-                              {preset.guitar} • {preset.amp} • {preset.style || preset.artist}
-                            </p>
-                            <div className="flex gap-2">
                               <button
-                                onClick={() => loadPreset(preset)}
-                                className="flex-1 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-all"
+                                onClick={() => setShowSaveDialog(false)}
+                                className="pedal-vintage"
+                                style={{
+                                  flex: 1,
+                                  padding: '0.5rem',
+                                  fontSize: '0.875rem',
+                                  fontWeight: 'bold',
+                                  transition: 'all 0.2s ease'
+                                }}
                               >
-                                Charger
-                              </button>
-                              <button className="py-1 px-3 bg-gray-600 text-white text-sm rounded hover:bg-gray-500 transition-all">
-                                <Icons.Share2 />
+                                ❌ Annuler
                               </button>
                             </div>
                           </div>
-                        ))}
-                        {savedPresets.length === 0 && (
-                          <p className="text-gray-400 text-sm text-center py-4">Aucun préréglage sauvegardé</p>
                         )}
+
+                        <div style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '0.75rem',
+                          maxHeight: '20rem',
+                          overflowY: 'auto'
+                        }}>
+                          {savedPresets.map(preset => (
+                            <div key={preset.id} className="cream-panel" style={{padding: '1rem'}}>
+                              <div style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'flex-start',
+                                marginBottom: '0.75rem'
+                              }}>
+                                <h4 style={{
+                                  fontWeight: 'bold',
+                                  fontSize: '1.125rem',
+                                  color: '#2F1B14',
+                                  margin: 0
+                                }}>{preset.name}</h4>
+                                <button
+                                  onClick={() => deletePreset(preset.id)}
+                                  style={{
+                                    color: '#DC2626',
+                                    fontWeight: 'bold',
+                                    fontSize: '1.125rem',
+                                    background: 'none',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    transition: 'color 0.2s ease'
+                                  }}
+                                  onMouseOver={(e) => e.target.style.color = '#991B1B'}
+                                  onMouseOut={(e) => e.target.style.color = '#DC2626'}
+                                >
+                                  ✕
+                                </button>
+                              </div>
+                              <p style={{
+                                fontSize: '0.875rem',
+                                marginBottom: '0.75rem',
+                                color: '#8B4513',
+                                margin: '0 0 0.75rem 0'
+                              }}>
+                                {preset.guitar} • {preset.amp} • {preset.style || preset.artist}
+                              </p>
+                              <div style={{display: 'flex', gap: '0.5rem'}}>
+                                <button
+                                  onClick={() => loadPreset(preset)}
+                                  className="vintage-button"
+                                  style={{
+                                    flex: 1,
+                                    padding: '0.5rem',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 'bold',
+                                    transition: 'all 0.2s ease'
+                                  }}
+                                >
+                                  📂 Charger
+                                </button>
+                                <button 
+                                  className="pedal-vintage"
+                                  style={{
+                                    padding: '0.5rem 1rem',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 'bold',
+                                    transition: 'all 0.2s ease'
+                                  }}
+                                >
+                                  <Icons.Share2 />
+                                </button>
+                              </div>
+                            </div>
+                          ))}
+                          {savedPresets.length === 0 && (
+                            <div className="cream-panel" style={{padding: '1.5rem', textAlign: 'center'}}>
+                              <p style={{
+                                fontWeight: 'bold',
+                                color: '#8B4513',
+                                margin: 0
+                              }}>Aucun préréglage sauvegardé</p>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 {(selectedGuitar || selectedPickups || selectedAmp || selectedPedals.length > 0 || selectedStyle || selectedArtist || customArtist) && (
-                  <div className="mt-8 bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
-                    <h3 className="text-lg font-semibold mb-3 text-purple-400">Configuration Actuelle</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 text-sm">
+                  <div className="orange-panel" style={{marginTop: '2rem'}}>
+                    <h3 className="vintage-title" style={{
+                      fontSize: '1.5rem',
+                      fontWeight: 'bold',
+                      marginBottom: '1.5rem'
+                    }}>Configuration Actuelle</h3>
+                    <div className="responsive-grid lg-cols-5 md-cols-2" style={{gap: '1.25rem', marginBottom: '1.5rem'}}>
                       {selectedGuitar && (
-                        <div className="bg-gray-700 p-3 rounded-lg">
-                          <span className="text-gray-400">Guitare:</span>
-                          <p className="text-white font-medium">{selectedGuitar}</p>
+                        <div className="cream-panel" style={{padding: '1rem'}}>
+                          <span style={{
+                            display: 'block',
+                            fontSize: '0.875rem',
+                            fontWeight: 'bold',
+                            marginBottom: '0.5rem',
+                            color: '#8B4513'
+                          }}>Guitare:</span>
+                          <p style={{
+                            fontWeight: 'bold',
+                            color: '#2F1B14',
+                            margin: 0
+                          }}>{selectedGuitar}</p>
                         </div>
                       )}
                       {selectedPickups && (
-                        <div className="bg-gray-700 p-3 rounded-lg">
-                          <span className="text-gray-400">Micros:</span>
-                          <p className="text-white font-medium">{selectedPickups}</p>
+                        <div className="cream-panel" style={{padding: '1rem'}}>
+                          <span style={{
+                            display: 'block',
+                            fontSize: '0.875rem',
+                            fontWeight: 'bold',
+                            marginBottom: '0.5rem',
+                            color: '#8B4513'
+                          }}>Micros:</span>
+                          <p style={{
+                            fontWeight: 'bold',
+                            color: '#2F1B14',
+                            margin: 0
+                          }}>{selectedPickups}</p>
                         </div>
                       )}
                       {selectedAmp && (
-                        <div className="bg-gray-700 p-3 rounded-lg">
-                          <span className="text-gray-400">Ampli:</span>
-                          <p className="text-white font-medium">{selectedAmp}</p>
+                        <div className="cream-panel" style={{padding: '1rem'}}>
+                          <span style={{
+                            display: 'block',
+                            fontSize: '0.875rem',
+                            fontWeight: 'bold',
+                            marginBottom: '0.5rem',
+                            color: '#8B4513'
+                          }}>Ampli:</span>
+                          <p style={{
+                            fontWeight: 'bold',
+                            color: '#2F1B14',
+                            margin: 0
+                          }}>{selectedAmp}</p>
                         </div>
                       )}
                       {selectedPedals.length > 0 && (
-                        <div className="bg-gray-700 p-3 rounded-lg">
-                          <span className="text-gray-400">Pédales:</span>
-                          <p className="text-white font-medium">{selectedPedals.join(', ')}</p>
+                        <div className="cream-panel" style={{padding: '1rem'}}>
+                          <span style={{
+                            display: 'block',
+                            fontSize: '0.875rem',
+                            fontWeight: 'bold',
+                            marginBottom: '0.5rem',
+                            color: '#8B4513'
+                          }}>Pédales:</span>
+                          <p style={{
+                            fontWeight: 'bold',
+                            color: '#2F1B14',
+                            margin: 0
+                          }}>{selectedPedals.join(', ')}</p>
                         </div>
                       )}
                       {(selectedStyle || selectedArtist || customArtist) && (
-                        <div className="bg-gray-700 p-3 rounded-lg">
-                          <span className="text-gray-400">Style/Artiste:</span>
-                          <p className="text-white font-medium">{selectedStyle || (selectedArtist === 'custom' ? customArtist : selectedArtist)}</p>
+                        <div className="cream-panel" style={{padding: '1rem'}}>
+                          <span style={{
+                            display: 'block',
+                            fontSize: '0.875rem',
+                            fontWeight: 'bold',
+                            marginBottom: '0.5rem',
+                            color: '#8B4513'
+                          }}>Style/Artiste:</span>
+                          <p style={{
+                            fontWeight: 'bold',
+                            color: '#2F1B14',
+                            margin: 0
+                          }}>{selectedStyle || (selectedArtist === 'custom' ? customArtist : selectedArtist)}</p>
                         </div>
                       )}
                     </div>
+
+                    {/* Réglages détaillés des pédales */}
+                    {selectedPedals.length > 0 && Object.keys(pedalSettings).length > 0 && (
+                      <div style={{marginTop: '1.5rem'}}>
+                        <h4 className="vintage-title" style={{
+                          fontSize: '1.25rem',
+                          fontWeight: 'bold',
+                          marginBottom: '1rem'
+                        }}>Réglages des Effets</h4>
+                        <div className="responsive-grid lg-cols-3 md-cols-2" style={{gap: '1rem'}}>
+                          {selectedPedals.map(pedal => {
+                            const settings = pedalSettings[pedal];
+                            if (!settings) return null;
+                            
+                            return (
+                              <div key={pedal} className="cream-panel" style={{padding: '1rem'}}>
+                                <span style={{
+                                  display: 'block',
+                                  fontSize: '0.875rem',
+                                  fontWeight: 'bold',
+                                  marginBottom: '0.5rem',
+                                  color: '#8B4513'
+                                }}>{pedal}:</span>
+                                <div style={{display: 'flex', flexDirection: 'column', gap: '0.5rem'}}>
+                                  {Object.entries(settings).map(([param, value]) => {
+                                    const paramNames = getPedalParameterNames(pedal);
+                                    const displayName = paramNames[param] || param;
+                                    const displayValue = param === 'time' ? `${value}ms` : value;
+                                    return (
+                                      <div key={param} style={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        fontSize: '0.875rem'
+                                      }}>
+                                        <span style={{
+                                          fontWeight: 'bold',
+                                          color: '#2F1B14'
+                                        }}>{displayName}:</span>
+                                        <span style={{
+                                          fontWeight: 'bold',
+                                          color: '#D2691E'
+                                        }}>{displayValue}</span>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
 
-                <footer className="mt-8 text-center text-gray-400 text-sm">
-                  <p>🎸 Guitar Amp Auto-Tuner - Développé avec ❤️ pour les guitaristes</p>
-                  <p className="mt-2">Configurez automatiquement votre ampli selon votre équipement et style musical</p>
+                <footer style={{marginTop: '2.5rem', textAlign: 'center'}}>
+                  <div className="cream-panel" style={{padding: '1.5rem'}}>
+                    <p className="vintage-title" style={{
+                      fontSize: '1.5rem',
+                      fontWeight: 'bold',
+                      marginBottom: '0.75rem',
+                      fontFamily: "'Righteous', cursive"
+                    }}>
+                      🎸 Guitar Amp Auto-Tuner 🎸
+                    </p>
+                    <p style={{
+                      fontSize: '1.125rem',
+                      fontWeight: 'bold',
+                      color: '#8B4513',
+                      margin: '0 0 0.5rem 0'
+                    }}>
+                      Développé avec ❤️ pour les guitaristes
+                    </p>
+                    <p style={{
+                      fontSize: '0.875rem',
+                      fontWeight: 'bold',
+                      color: '#2F1B14',
+                      margin: 0
+                    }}>
+                      Configurez automatiquement votre ampli selon votre équipement et style musical
+                    </p>
+                  </div>
                 </footer>
+              </div>
+            </div>
               </div>
             </div>
           );
