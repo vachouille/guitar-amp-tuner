@@ -123,6 +123,7 @@
             'Mesa Boogie Dual Rectifier',
             'Orange Rockerverb',
             'Blackstar HT Club 40',
+            'Blackstar HT-1R',
             'Blackstar St James Combo 212 6L6',
             'Hughes & Kettner Triamp',
             'ENGL Powerball',
@@ -217,32 +218,53 @@
           ];
 
           const getAmpControls = (ampType) => {
-            const baseControls = ['gain', 'treble', 'middle', 'bass', 'reverb', 'presence', 'volume'];
-            
             switch (ampType) {
               case 'Fender Twin Reverb':
-                return [...baseControls, 'bright', 'vibrato'];
+                return ['gain', 'treble', 'middle', 'bass', 'reverb', 'presence', 'volume', 'bright', 'vibrato'];
               case 'Marshall JCM800':
+                return ['gain', 'treble', 'middle', 'bass', 'reverb', 'presence', 'volume', 'resonance'];
               case 'Marshall Plexi':  
-                return [...baseControls, 'resonance'];
+                return ['gain', 'treble', 'middle', 'bass', 'reverb', 'presence', 'volume', 'resonance'];
               case 'Vox AC30':
-                return [...baseControls, 'cut', 'brilliance'];
+                return ['gain', 'treble', 'middle', 'bass', 'reverb', 'cut', 'volume', 'brilliance'];
               case 'Mesa Boogie Dual Rectifier':
-                return [...baseControls, 'contour', 'vintage'];
+                return ['gain', 'treble', 'middle', 'bass', 'reverb', 'presence', 'volume', 'contour', 'vintage'];
               case 'Orange Rockerverb':
-                return [...baseControls, 'attenuator'];
+                return ['gain', 'treble', 'middle', 'bass', 'reverb', 'presence', 'volume', 'attenuator'];
               case 'Blackstar HT Club 40':
-                return [...baseControls, 'isa'];
+                return ['gain', 'treble', 'middle', 'bass', 'reverb', 'presence', 'volume', 'isa'];
+              case 'Blackstar HT-1R':
+                return ['gain', 'tone', 'reverb', 'volume', 'isa'];
               case 'Blackstar St James Combo 212 6L6':
-                return [...baseControls, 'isa', 'power_reduction'];
+                return ['gain', 'treble', 'middle', 'bass', 'reverb', 'volume', 'isa', 'power_reduction'];
               case 'Peavey 5150':
-                return [...baseControls, 'resonance', 'crunch'];
+                return ['gain', 'treble', 'middle', 'bass', 'reverb', 'presence', 'volume', 'resonance', 'crunch'];
               case 'ENGL Powerball':
-                return [...baseControls, 'depth', 'contour'];
+                return ['gain', 'treble', 'middle', 'bass', 'reverb', 'presence', 'volume', 'depth', 'contour'];
               case 'Roland JC-120':
-                return [...baseControls, 'chorus', 'vibrato'];
+                return ['gain', 'treble', 'middle', 'bass', 'reverb', 'volume', 'chorus', 'vibrato'];
+              case 'Soldano SLO-100':
+                return ['gain', 'treble', 'middle', 'bass', 'reverb', 'presence', 'volume'];
+              case 'Two Rock Studio Pro':
+                return ['gain', 'treble', 'middle', 'bass', 'reverb', 'presence', 'volume'];
+              case 'Hughes & Kettner Triamp':
+                return ['gain', 'treble', 'middle', 'bass', 'reverb', 'presence', 'volume', 'contour'];
+              case 'Bogner Ecstasy':
+                return ['gain', 'treble', 'middle', 'bass', 'reverb', 'presence', 'volume', 'structure'];
+              case 'Diezel VH4':
+                return ['gain', 'treble', 'middle', 'bass', 'reverb', 'presence', 'volume', 'deep'];
+              case 'Friedman BE-100':
+                return ['gain', 'treble', 'middle', 'bass', 'reverb', 'presence', 'volume', 'fat'];
+              case 'Matchless DC30':
+                return ['gain', 'treble', 'middle', 'bass', 'reverb', 'volume', 'cut'];
+              case 'Bad Cat Black Cat':
+                return ['gain', 'treble', 'middle', 'bass', 'reverb', 'presence', 'volume'];
+              case 'Dr Z Maz 18':
+                return ['gain', 'treble', 'middle', 'bass', 'reverb', 'volume', 'cut'];
+              case 'Supro Delta King':
+                return ['gain', 'treble', 'bass', 'reverb', 'volume'];
               default:
-                return baseControls;
+                return ['gain', 'treble', 'middle', 'bass', 'reverb', 'presence', 'volume'];
             }
           };
 
@@ -255,25 +277,43 @@
               case 'Marshall Plexi':
                 return { gain: 60, treble: 65, middle: 65, bass: 50, reverb: 20, presence: 60, volume: 75, resonance: 55 };
               case 'Vox AC30':
-                return { gain: 50, treble: 60, middle: 70, bass: 45, reverb: 40, presence: 55, volume: 65, cut: 60, brilliance: true };
+                return { gain: 50, treble: 60, middle: 70, bass: 45, reverb: 40, cut: 60, volume: 65, brilliance: true };
               case 'Mesa Boogie Dual Rectifier':
                 return { gain: 80, treble: 65, middle: 40, bass: 70, reverb: 30, presence: 70, volume: 60, contour: 40, vintage: false };
               case 'Orange Rockerverb':
                 return { gain: 65, treble: 60, middle: 65, bass: 60, reverb: 45, presence: 55, volume: 65, attenuator: 50 };
               case 'Blackstar HT Club 40':
                 return { gain: 55, treble: 62, middle: 58, bass: 55, reverb: 40, presence: 60, volume: 65, isa: 45 };
+              case 'Blackstar HT-1R':
+                return { gain: 35, tone: 60, reverb: 35, volume: 75, isa: 50 };
               case 'Blackstar St James Combo 212 6L6':
-                return { gain: 50, treble: 58, middle: 62, bass: 58, reverb: 45, presence: 55, volume: 68, isa: 50, power_reduction: 50 };
+                return { gain: 50, treble: 58, middle: 62, bass: 58, reverb: 45, volume: 68, isa: 50, power_reduction: 50 };
               case 'Peavey 5150':
                 return { gain: 85, treble: 75, middle: 30, bass: 75, reverb: 20, presence: 80, volume: 50, resonance: 70, crunch: 60 };
               case 'ENGL Powerball':
                 return { gain: 80, treble: 70, middle: 45, bass: 70, reverb: 25, presence: 75, volume: 55, depth: 65, contour: 50 };
               case 'Roland JC-120':
-                return { gain: 15, treble: 55, middle: 60, bass: 55, reverb: 40, presence: 50, volume: 70, chorus: true, vibrato: false };
+                return { gain: 15, treble: 55, middle: 60, bass: 55, reverb: 40, volume: 70, chorus: true, vibrato: false };
               case 'Soldano SLO-100':
                 return { gain: 75, treble: 68, middle: 55, bass: 62, reverb: 35, presence: 70, volume: 60 };
               case 'Two Rock Studio Pro':
                 return { gain: 35, treble: 62, middle: 58, bass: 52, reverb: 50, presence: 48, volume: 68 };
+              case 'Hughes & Kettner Triamp':
+                return { gain: 70, treble: 65, middle: 55, bass: 60, reverb: 35, presence: 65, volume: 65, contour: 45 };
+              case 'Bogner Ecstasy':
+                return { gain: 65, treble: 68, middle: 60, bass: 58, reverb: 40, presence: 62, volume: 66, structure: 55 };
+              case 'Diezel VH4':
+                return { gain: 75, treble: 65, middle: 45, bass: 65, reverb: 30, presence: 70, volume: 60, deep: 60 };
+              case 'Friedman BE-100':
+                return { gain: 68, treble: 70, middle: 58, bass: 60, reverb: 35, presence: 68, volume: 65, fat: false };
+              case 'Matchless DC30':
+                return { gain: 45, treble: 65, middle: 60, bass: 50, reverb: 45, volume: 70, cut: 55 };
+              case 'Bad Cat Black Cat':
+                return { gain: 55, treble: 68, middle: 62, bass: 55, reverb: 42, presence: 58, volume: 68 };
+              case 'Dr Z Maz 18':
+                return { gain: 40, treble: 65, middle: 58, bass: 52, reverb: 48, volume: 72, cut: 60 };
+              case 'Supro Delta King':
+                return { gain: 45, treble: 70, bass: 55, reverb: 50, volume: 70 };
               default:
                 return { gain: 50, treble: 50, middle: 50, bass: 50, reverb: 30, presence: 40, volume: 60 };
             }
@@ -281,41 +321,64 @@
 
           const getAutoSettings = () => {
             let settings = selectedAmp ? getAmpPresets(selectedAmp) : { ...ampSettings };
+            const availableControls = getAmpControls(selectedAmp);
 
+            // Ajustements basés sur la guitare et micros
             if (selectedGuitar.includes('Stratocaster') && selectedPickups === 'Simple bobinage') {
-              settings = { ...settings, treble: Math.min(settings.treble + 5, 100), middle: Math.max(settings.middle - 5, 0) };
+              if (availableControls.includes('treble')) settings.treble = Math.min(settings.treble + 5, 100);
+              if (availableControls.includes('tone')) settings.tone = Math.min(settings.tone + 8, 100); // Tone plus brillant pour Strat
+              if (availableControls.includes('middle')) settings.middle = Math.max(settings.middle - 5, 0);
             } else if (selectedGuitar.includes('Les Paul') && selectedPickups === 'Humbucker') {
-              settings = { ...settings, middle: Math.min(settings.middle + 10, 100), bass: Math.min(settings.bass + 10, 100) };
+              if (availableControls.includes('middle')) settings.middle = Math.min(settings.middle + 10, 100);
+              if (availableControls.includes('tone')) settings.tone = Math.max(settings.tone - 5, 0); // Tone plus chaud pour Les Paul
+              if (availableControls.includes('bass')) settings.bass = Math.min(settings.bass + 10, 100);
             } else if (selectedPickups === 'P90') {
-              settings = { ...settings, middle: Math.min(settings.middle + 5, 100), gain: Math.min(settings.gain + 10, 100) };
+              if (availableControls.includes('middle')) settings.middle = Math.min(settings.middle + 5, 100);
+              if (availableControls.includes('tone')) settings.tone = Math.min(settings.tone + 3, 100);
+              if (availableControls.includes('gain')) settings.gain = Math.min(settings.gain + 10, 100);
             } else if (selectedPickups === 'Active (EMG)') {
-              settings = { ...settings, gain: Math.max(settings.gain - 5, 0), presence: Math.min(settings.presence + 10, 100) };
+              if (availableControls.includes('gain')) settings.gain = Math.max(settings.gain - 5, 0);
+              if (availableControls.includes('presence')) settings.presence = Math.min(settings.presence + 10, 100);
+              if (availableControls.includes('tone')) settings.tone = Math.min(settings.tone + 5, 100);
             }
 
+            // Ajustements basés sur le style musical
             switch (selectedStyle) {
               case 'Blues':
-                settings = { ...settings, gain: Math.max(settings.gain - 10, 0), reverb: Math.min(settings.reverb + 15, 100) };
+                if (availableControls.includes('gain')) settings.gain = Math.max(settings.gain - 10, 0);
+                if (availableControls.includes('reverb')) settings.reverb = Math.min(settings.reverb + 15, 100);
+                if (availableControls.includes('tone')) settings.tone = Math.max(settings.tone - 5, 0); // Tone plus chaud pour blues
                 break;
               case 'Metal':
-                settings = { ...settings, gain: Math.min(settings.gain + 15, 100), middle: Math.max(settings.middle - 20, 0), presence: Math.min(settings.presence + 10, 100) };
+                if (availableControls.includes('gain')) settings.gain = Math.min(settings.gain + 15, 100);
+                if (availableControls.includes('middle')) settings.middle = Math.max(settings.middle - 20, 0);
+                if (availableControls.includes('tone')) settings.tone = Math.min(settings.tone + 10, 100); // Tone plus agressif
+                if (availableControls.includes('presence')) settings.presence = Math.min(settings.presence + 10, 100);
                 break;
               case 'Jazz':
-                settings = { ...settings, gain: Math.max(settings.gain - 30, 0), middle: Math.min(settings.middle + 15, 100), reverb: Math.min(settings.reverb + 10, 100) };
+                if (availableControls.includes('gain')) settings.gain = Math.max(settings.gain - 30, 0);
+                if (availableControls.includes('middle')) settings.middle = Math.min(settings.middle + 15, 100);
+                if (availableControls.includes('tone')) settings.tone = Math.max(settings.tone - 10, 0); // Tone plus doux pour jazz
+                if (availableControls.includes('reverb')) settings.reverb = Math.min(settings.reverb + 10, 100);
                 break;
               case 'Country':
-                settings = { ...settings, gain: Math.max(settings.gain - 25, 0), treble: Math.min(settings.treble + 10, 100), reverb: Math.min(settings.reverb + 20, 100) };
+                if (availableControls.includes('gain')) settings.gain = Math.max(settings.gain - 25, 0);
+                if (availableControls.includes('treble')) settings.treble = Math.min(settings.treble + 10, 100);
+                if (availableControls.includes('tone')) settings.tone = Math.min(settings.tone + 15, 100); // Tone brillant pour country
+                if (availableControls.includes('reverb')) settings.reverb = Math.min(settings.reverb + 20, 100);
                 break;
               default:
                 break;
             }
 
-            if (selectedPedals.includes('Overdrive')) {
+            // Ajustements basés sur les pédales
+            if (selectedPedals.includes('Overdrive') && availableControls.includes('gain')) {
               settings.gain = Math.max(settings.gain - 15, 0);
             }
-            if (selectedPedals.includes('Delay')) {
+            if (selectedPedals.includes('Delay') && availableControls.includes('reverb')) {
               settings.reverb = Math.max(settings.reverb - 10, 0);
             }
-            if (selectedPedals.includes('Reverb')) {
+            if (selectedPedals.includes('Reverb') && availableControls.includes('reverb')) {
               settings.reverb = Math.min(settings.reverb + 20, 100);
             }
 
@@ -377,7 +440,25 @@
           useEffect(() => {
             if (selectedAmp) {
               const ampPresets = getAmpPresets(selectedAmp);
-              setAmpSettings(ampPresets);
+              const availableControls = getAmpControls(selectedAmp);
+              
+              // Ne garder que les contrôles disponibles pour cet ampli
+              const filteredSettings = {};
+              availableControls.forEach(control => {
+                if (ampPresets[control] !== undefined) {
+                  filteredSettings[control] = ampPresets[control];
+                } else {
+                  // Valeurs par défaut pour les contrôles non définis
+                  if (control === 'bright' || control === 'vintage' || control === 'brilliance' || 
+                      control === 'chorus' || control === 'vibrato' || control === 'fat') {
+                    filteredSettings[control] = false;
+                  } else {
+                    filteredSettings[control] = 50;
+                  }
+                }
+              });
+              
+              setAmpSettings(filteredSettings);
             }
           }, [selectedAmp]);
 
@@ -537,10 +618,33 @@
                       </h2>
                       <div className="space-y-4">
                         {getAmpControls(selectedAmp).map((param) => {
-                          if (param === 'bright' || param === 'vintage' || param === 'brilliance' || param === 'chorus' || param === 'vibrato') {
+                          // Noms d'affichage personnalisés pour les contrôles
+                          const displayNames = {
+                            'power_reduction': 'Power Reduction',
+                            'isa': 'ISA',
+                            'tone': 'Tone',
+                            'cut': 'Cut',
+                            'brilliance': 'Brilliance',
+                            'bright': 'Bright',
+                            'vintage': 'Vintage',
+                            'chorus': 'Chorus',
+                            'vibrato': 'Vibrato',
+                            'resonance': 'Resonance',
+                            'contour': 'Contour',
+                            'attenuator': 'Attenuator',
+                            'crunch': 'Crunch',
+                            'depth': 'Depth',
+                            'structure': 'Structure',
+                            'deep': 'Deep',
+                            'fat': 'Fat'
+                          };
+                          
+                          const displayName = displayNames[param] || param.charAt(0).toUpperCase() + param.slice(1);
+                          
+                          if (param === 'bright' || param === 'vintage' || param === 'brilliance' || param === 'chorus' || param === 'vibrato' || param === 'fat') {
                             return (
                               <div key={param} className="flex items-center justify-between">
-                                <label className="text-sm font-medium text-gray-300 capitalize">{param}</label>
+                                <label className="text-sm font-medium text-gray-300">{displayName}</label>
                                 <button
                                   onClick={() => setAmpSettings(prev => ({
                                     ...prev,
@@ -562,7 +666,7 @@
                           return (
                             <div key={param}>
                               <div className="flex justify-between items-center mb-2">
-                                <label className="text-sm font-medium text-gray-300 capitalize">{param}</label>
+                                <label className="text-sm font-medium text-gray-300">{displayName}</label>
                                 <span className="text-sm text-purple-400 font-mono">{value}</span>
                               </div>
                               <input
