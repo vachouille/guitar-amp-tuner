@@ -12,12 +12,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎸</text></svg>">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Righteous&family=Roboto+Condensed:wght@400;700&display=swap');
-        
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Roboto Condensed', sans-serif;
+            font-family: 'Arial Black', 'Helvetica Neue', Arial, sans-serif;
             background: linear-gradient(135deg, #8B4513 0%, #D2691E 25%, #FF8C00 50%, #D2691E 75%, #8B4513 100%);
             background-attachment: fixed;
         }
@@ -167,13 +165,16 @@
             border: 3px solid #B8860B;
             border-radius: 12px;
             color: #2F1B14;
-            font-weight: bold;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
             box-shadow: 
                 inset 0 2px 4px rgba(255, 255, 255, 0.2),
                 inset 0 -2px 4px rgba(139, 69, 19, 0.3),
                 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: all 0.2s ease;
+            cursor: pointer;
         }
         
         .vintage-button:hover {
@@ -206,11 +207,12 @@
         }
         
         .vintage-title {
-            font-family: 'Righteous', cursive;
+            font-family: 'Impact', 'Arial Black', 'Helvetica Neue', Arial, sans-serif;
             color: #FFD700;
             text-shadow: 
                 2px 2px 4px rgba(0, 0, 0, 0.7),
                 0 0 10px rgba(255, 140, 0, 0.5);
+            letter-spacing: 2px;
         }
         
         .vintage-subtitle {
@@ -262,7 +264,83 @@
             filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.7));
         }
         
+        /* Fallback fonts styling */
+        h1, h2, h3, h4 {
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+        
+        .vintage-text {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
         /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .vintage-container {
+                margin: 0.5rem;
+                padding: 1rem !important;
+                border-radius: 15px;
+            }
+            
+            .orange-panel, .cream-panel {
+                padding: 1rem !important;
+                margin-bottom: 1rem;
+            }
+            
+            .vintage-title {
+                font-size: 2rem !important;
+            }
+            
+            .vintage-button {
+                padding: 0.75rem 1rem !important;
+                font-size: 0.9rem !important;
+            }
+            
+            .icon-lg {
+                width: 2rem;
+                height: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .vintage-title {
+                font-size: 1.5rem !important;
+            }
+            
+            .orange-panel h2 {
+                font-size: 1.25rem !important;
+            }
+        }
+        
+        /* Grid responsive fixes */
+        .responsive-grid {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .responsive-grid.md-cols-2 { grid-template-columns: repeat(2, 1fr); }
+            .responsive-grid.md-cols-3 { grid-template-columns: repeat(3, 1fr); }
+        }
+        
+        @media (min-width: 1024px) {
+            .responsive-grid.lg-cols-3 { grid-template-columns: repeat(3, 1fr); }
+            .responsive-grid.lg-cols-5 { grid-template-columns: repeat(5, 1fr); }
+        }
+        
+        /* Fix for select and input elements */
+        .vintage-select option {
+            background: #FFF8DC;
+            color: #2F1B14;
+            padding: 0.5rem;
+        }
+        
+        .vintage-input::placeholder,
+        .vintage-select option:first-child {
+            color: #8B4513;
+            opacity: 0.8;
+        }
         @media (max-width: 768px) {
             .vintage-container {
                 margin: 0.5rem;
@@ -878,7 +956,7 @@
             <div style={{
               minHeight: '100vh',
               padding: '1rem',
-              fontFamily: "'Roboto Condensed', sans-serif"
+              fontFamily: "'Arial Black', 'Helvetica Neue', Arial, sans-serif"
             }}>
               <div style={{
                 maxWidth: '1200px',
@@ -896,7 +974,7 @@
                     <Icons.Guitar />
                     <h1 className="vintage-title" style={{
                       fontSize: '3rem',
-                      fontFamily: "'Righteous', cursive",
+                      fontFamily: "'Impact', 'Arial Black', 'Helvetica Neue', Arial, sans-serif",
                       margin: 0,
                       textAlign: 'center'
                     }}>
@@ -1655,7 +1733,7 @@
                       fontSize: '1.5rem',
                       fontWeight: 'bold',
                       marginBottom: '0.75rem',
-                      fontFamily: "'Righteous', cursive"
+                      fontFamily: "'Impact', 'Arial Black', 'Helvetica Neue', Arial, sans-serif"
                     }}>
                       🎸 Guitar Amp Auto-Tuner 🎸
                     </p>
